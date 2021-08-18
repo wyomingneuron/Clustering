@@ -1,0 +1,28 @@
+import pandas as pd
+import numpy as np
+import random as rd
+import matplotlib.pyplot as plt;
+
+data = pd.read_csv('M1L2 statistic.csv');
+
+non_numeric = ['cell types']
+data_numeric = data.drop(non_numeric, axis = 1);
+
+from sklearn.manifold import TSNE
+m = TSNE(perplexity=5, learning_rate=100, early_exaggeration=15);
+
+tsne_features = m.fit_transform(data_numeric)
+tsne_features[1:4,:];
+
+data['x'] = tsne_features[:,0]
+data['y'] = tsne_features[:,1];
+
+import seaborn as sns
+sns.scatterplot(x='x', y='y', data=data)
+plt.show();
+
+sns.scatterplot(x='x', y='y', hue='cell types', data=data)
+plt.show();
+
+tsne_df = pd.DataFrame({'X':tsne_features[:,0],'Y':tsne_features[:,1]})
+tsne_df.head();
